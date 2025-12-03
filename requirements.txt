@@ -1,0 +1,4 @@
+py-cord==2.7.0rc2
+asyncpg==0.31.0
+psutil==7.1.3
+python-dotenv==1.0.0
