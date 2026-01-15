@@ -7,7 +7,8 @@ class BasicImageView(discord.ui.DesignerView):
             discord.ui.Section(
                 discord.ui.TextDisplay(description),
                 accessory=discord.ui.Thumbnail(url=avatar_url)
-            )
+            ),
+            colour=discord.Colour.yellow()
         )
 
         super().__init__(components)
