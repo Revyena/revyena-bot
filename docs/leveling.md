@@ -9,8 +9,7 @@ The leveling system uses the following database schema:
 {
   "leveling": {
     "columns": {
-      "id": "SERIAL PRIMARY KEY",
-      "user_id": "BIGINT  NOT NULL",
+      "user_id": "BIGINT NOT NULL",
       "guild_id": "BIGINT NOT NULL",
       "experience": "BIGINT NOT NULL",
       "created_date": "TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP",
