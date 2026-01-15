@@ -1,27 +1,21 @@
 services:
-  database:
+  postgres:
     image: postgres:18
     restart: unless-stopped
     env_file:
       - .env
+    volumes:
+      - db-data:/var/lib/postgresql/
     ports:
       - "5432:5432"
-    volumes:
-      - db_data:/var/lib/postgresql
 
   bot:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    build: .
     depends_on:
-      - database
+      - postgres
     env_file:
       - .env
-    volumes:
-      - ./:/app
-    working_dir: /app
-    command: ["/bin/sh", "-c", "python main.py"]
 
 volumes:
-  db_data:
+  db-data:
     driver: local

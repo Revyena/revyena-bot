@@ -1,34 +1,21 @@
-# Lightweight Dockerfile for the Revyena bot
-# Uses a slim Python image and installs requirements during build
+# Python 3.11 slim base image
 FROM python:3.13-slim
 
-# Ensure output is logged immediately
-ENV PYTHONUNBUFFERED=1
-
+# Set working directory
 WORKDIR /app
 
-# Install build deps required by some packages (asyncpg may need libpq-dev)
+# Install system dependencies for asyncpg (libpq)
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends gcc libpq-dev build-essential \
+    && apt-get install -y --no-install-recommends gcc libpq-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy only requirements first to leverage Docker layer caching
-COPY requirements.txt ./
-
-# Install Python dependencies
-RUN pip install --no-cache-dir --upgrade pip \
-    && pip install --no-cache-dir -r requirements.txt
-
-# Create a non-root user and switch to it
-RUN useradd -m appuser
+# Copy requirements and install
+COPY requirements.txt /app/requirements.txt
+RUN pip install --no-cache-dir -r /app/requirements.txt
 
 # Copy application code
 COPY . /app
-RUN chown -R appuser:appuser /app
-RUN pip install --no-cache-dir -r requirements.txt
 
-USER appuser
-
-# Default command (can be overridden by docker-compose)
-CMD ["python", "main.py"]
+# Default command to run the bot
+CMD ["python", "-u", "main.py"]
 
