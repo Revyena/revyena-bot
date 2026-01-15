@@ -1,6 +1,6 @@
 import discord
 
-from main import RevyenaBot
+from revyenaBot import RevyenaBot
 from utilities.modules.information import InformationUtilities
 from views.basicView import BasicImageView
 
