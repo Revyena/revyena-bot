@@ -45,3 +45,46 @@ class RevHandler:
         """
         async with self.pool.acquire() as conn:
             return await conn.execute(query, *args)
+
+    async def _create_table(self, name: str, columns: dict, constraints: list[str] = None):
+        """
+        Create a table using a simple Python definition.
+
+        columns: {
+            "user_id": "BIGINT PRIMARY KEY",
+            "xp": "INT NOT NULL DEFAULT 0"
+        }
+
+        constraints: ["UNIQUE(user_id, xp)"]
+        """
+        column_sql = ",\n    ".join(f"{col} {defn}" for col, defn in columns.items())
+        constraints_sql = ""
+
+        if constraints:
+            constraints_sql = ",\n    " + ",\n    ".join(constraints)
+
+        query = f"""
+        CREATE TABLE IF NOT EXISTS {name} (
+            {column_sql}{constraints_sql}
+        );
+        """
+
+        async with self.pool.acquire() as conn:
+            await conn.execute(query)
+
+    async def ensure_schema(self, schema: dict):
+        """
+        schema = {
+            "user_levels": {
+                "columns": {...},
+                "constraints": [...]
+            },
+            "profiles": {...}
+        }
+        """
+        for table_name, spec in schema.items():
+            await self._create_table(
+                table_name,
+                spec["columns"],
+                spec.get("constraints")
+            )
