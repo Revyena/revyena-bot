@@ -25,6 +25,7 @@ The leveling system uses the following database schema:
 
 ## Commands
 - `/level` - Displays the user's current level and experience
+- `/leaderboard` - Shows the top users in the server based on experience points
 
 ## Internal Logic
 Experience is calculated with the following formula:
