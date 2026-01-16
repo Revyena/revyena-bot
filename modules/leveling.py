@@ -6,9 +6,6 @@ from utilities.modules.leveling import LevelingRepository, LevelingMath
 from views.basicView import BasicImageView
 
 
-# TODO: Add leaderboard command
-# TODO: Add admin commands for managing leveling system
-# TODO: Add XP decay or cooldowns to prevent farming
 class LevelingCog(discord.Cog, name='Leveling'):
     def __init__(self, bot: RevyenaBot):
         self.bot = bot
